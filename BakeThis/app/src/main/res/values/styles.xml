@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="CustomExoMediaButton">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_width">45sp</item>
+        <item name="android:layout_height">45sp</item>
+    </style>
+
+    <style name="CustomExoMediaButton.Play">
+        <item name="android:src">@drawable/play_bt</item>
+    </style>
+
+    <style name="CustomExoMediaButton.FF">
+        <item name="android:src">@drawable/ff_t</item>
+    </style>
+
+    <style name="CustomExoMediaButton.Rewind">
+        <item name="android:src">@drawable/rewind_bt</item>
+    </style>
+
+    <style name="CustomExoMediaButton.Pause">
+        <item name="android:src">@drawable/pause_bt</item>
+    </style>
+
+</resources>

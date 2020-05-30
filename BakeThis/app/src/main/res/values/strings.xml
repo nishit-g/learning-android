@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BakeThis</string>
+    <string name="ingredients">Ingredient(s)</string>
+    <string name="steps">Step(s)</string>
+    <string name="read_more">Read More</string>
+    <string name="watch_more">Watch More</string>
+    <string name="prev">Previous</string>
+    <string name="next">Next</string>
+    <string name="no_video">No Video available for this step</string>
+</resources>
