@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bakethis">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.StepDetailActivity"></activity>
+        <receiver android:name=".IngredientWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ingredient_widget_provider_info" />
+        </receiver>
+
+        <activity android:name=".Activity.StepDetailActivity" />
         <activity android:name=".Activity.RecipeActivity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>

@@ -7,4 +7,6 @@
     <string name="prev">Previous</string>
     <string name="next">Next</string>
     <string name="no_video">No Video available for this step</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
