@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bakethis.Object.StepsObject;
 import com.example.bakethis.R;
 import com.example.bakethis.databinding.StepsSingleBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -44,10 +46,16 @@ public class StepsAdapter extends  RecyclerView.Adapter<StepsAdapter.SingleStepV
         StepsObject currentStep = stepsList.get(position);
         holder.tvStepDesc.setText((position+1) + ". " + currentStep.getShortDesc());
         if(!currentStep.getVideoUrl().isEmpty() || !currentStep.getThumbnailUrl().isEmpty()){
-            holder.tvReadWatch.setText(R.string.watch_more);
+            Picasso.get()
+                    .load(R.drawable.video)
+                    .error(R.drawable.error_placeholder)
+                    .into(holder.ivReadWatch);
         }
         else{
-            holder.tvReadWatch.setText(R.string.read_more);
+            Picasso.get()
+                    .load(R.drawable.read_more)
+                    .error(R.drawable.error_placeholder)
+                    .into(holder.ivReadWatch);
         }
     }
 
@@ -58,13 +66,13 @@ public class StepsAdapter extends  RecyclerView.Adapter<StepsAdapter.SingleStepV
 
     class SingleStepView extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvStepDesc;
-        TextView tvReadWatch;
+        ImageView ivReadWatch;
 
         public SingleStepView(@NonNull StepsSingleBinding itemView) {
             super(itemView.getRoot());
             rvLayout = itemView;
             tvStepDesc = rvLayout.tvStepDesc;
-            tvReadWatch = rvLayout.tvReadWatch;
+            ivReadWatch = rvLayout.ivReadWatch;
             itemView.getRoot().setOnClickListener(this);
         }
 

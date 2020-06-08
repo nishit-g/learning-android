@@ -7,6 +7,8 @@ public class Constants {
     public static final String THUMBNAIL_URL = "thumbnail_url";
     public static final String VIDEO_URL = "video_url";
     public static final String PLAY_WHEN_READY = "play_when_ready";
+    public static final String PREF_RECIPE_NAME = "pref_recipe_name";
+    public static final String PREF_RECIPE_LIST = "pref_recipe_list";
 
     private Constants(){}
 

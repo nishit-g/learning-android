@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakethis.Object.RecipeObject;
+import com.example.bakethis.R;
 import com.example.bakethis.databinding.HomepageSingleBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,6 +44,26 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.Homepa
         holder.tvServings.setText("Servings : " + recipeList.get(position).getServings());
         holder.tvName.setText(recipeList.get(position).getName());
 
+        int imageID = R.drawable.food4;
+        switch (position){
+            case 0: imageID =  R.drawable.food1; break;
+            case 1 : imageID = R.drawable.food2; break;
+            case 2: imageID = R.drawable.food3; break;
+            case 3: imageID = R.drawable.food4;break;
+        }
+
+        if(!recipeList.get(position).getImageUrl().isEmpty()){
+            Picasso.get()
+                    .load(recipeList.get(position).getImageUrl())
+                    .placeholder(imageID)
+                    .error(R.drawable.error_placeholder)
+                    .into(holder.ivRecipeImage);
+        }
+        else{
+            Picasso.get()
+                    .load(imageID)
+                    .into(holder.ivRecipeImage);
+        }
     }
 
     @Override

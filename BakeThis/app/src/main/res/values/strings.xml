@@ -9,4 +9,5 @@
     <string name="no_video">No Video available for this step</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="please_select_recipe">Please select a Recipe from the app</string>
 </resources>
