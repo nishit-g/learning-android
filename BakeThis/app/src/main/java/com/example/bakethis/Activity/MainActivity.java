@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.bakethis.Adapters.HomepageAdapter;
 import com.example.bakethis.Helper.Constants;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements HomepageAdapter.T
     private ActivityMainBinding layoutBinding;
     private RecyclerView rvHomePage;
     private ArrayList<RecipeObject> recipeList;
-
+    private boolean isTablet = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,10 @@ public class MainActivity extends AppCompatActivity implements HomepageAdapter.T
         setContentView(view);
 
         rvHomePage = layoutBinding.rvHomepage;
+
+        if(layoutBinding.isTablet!=null){
+            isTablet = true;
+        }
 
         inflateRecyclerView();
     }
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements HomepageAdapter.T
     public int calculateNoOfColumns() {
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int scalingFactor = 180;
+        int scalingFactor = (isTablet)?280:180;
         int noOfColumns = (int) (dpWidth/scalingFactor);
         if(noOfColumns<2)
             noOfColumns = 2;
@@ -67,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements HomepageAdapter.T
 
     @Override
     public void onRecipeSelect(int position) {
-        Intent widgetService = new Intent(this, IngredientWidgetProvider.class);
-
         //update the preferences and send the broadcast to the widgets to change the values
         updateSharedPreference(recipeList.get(position));
         sendBroadcastToWidget();

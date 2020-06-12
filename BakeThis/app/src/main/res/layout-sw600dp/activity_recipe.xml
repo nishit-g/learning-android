@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.RecipeActivity"
+    android:background="@color/almostBlue">
+
+    <LinearLayout
+        android:layout_width="340sp"
+        android:layout_height="match_parent"
+        android:id="@+id/ll_first_side"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ingredients"
+            android:background="@color/colorPrimary"
+            android:alpha="0.9"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+        <fragment
+            android:id="@+id/f_ingredient"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1"
+            android:name="com.example.bakethis.Fragments.IngredientFragment"
+            android:layout_marginBottom="8sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/steps"
+            android:background="@color/colorPrimary"
+            android:alpha="0.9"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+        <fragment
+            android:id="@+id/f_steps"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1"
+            android:name="com.example.bakethis.Fragments.StepsFragment"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_step_detail"
+        android:layout_width="0sp"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ll_first_side"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/is_tablet"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        tools:text="tabletMode"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

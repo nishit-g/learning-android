@@ -12,8 +12,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.bakethis.Adapters.StepsAdapter;
 import com.example.bakethis.Adapters.ViewPagerAdapter;
 import com.example.bakethis.Fragments.IngredientFragment;
+import com.example.bakethis.Fragments.StepsFragment;
 import com.example.bakethis.Helper.Constants;
 import com.example.bakethis.Object.RecipeObject;
 import com.example.bakethis.R;
@@ -25,6 +27,7 @@ public class RecipeActivity extends AppCompatActivity {
     private RecipeObject currentRecipe;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("recipe", "onCreate: Called");
@@ -33,20 +36,34 @@ public class RecipeActivity extends AppCompatActivity {
         recipeLayout = ActivityRecipeBinding.inflate(getLayoutInflater());
         setContentView(recipeLayout.getRoot());
 
-        viewPager = recipeLayout.vpRecipe;
-        tabLayout = recipeLayout.tlRecipe;
-
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        if(recipeLayout.isTablet==null){
+            implementPhoneLayout();
+        }
+        else{
+            implementTabletLayout();
+        }
 
         Intent intent = getIntent();
         currentRecipe = intent.getParcelableExtra(Constants.RECIPE_OBJECT);
 
         setupActionBar();
+    }
+
+    private void implementTabletLayout() {
+
+    }
+
+    private void implementPhoneLayout() {
+        viewPager = recipeLayout.vpRecipe;
+        tabLayout = recipeLayout.tlRecipe;
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
         viewPager.setAdapter(viewPagerAdapter);
+
     }
 
     private void setupActionBar() {
@@ -78,4 +95,5 @@ public class RecipeActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
     }
+
 }
