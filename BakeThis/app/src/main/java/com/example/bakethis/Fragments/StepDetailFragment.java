@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.bakethis.Activity.RecipeActivity;
 import com.example.bakethis.Helper.Constants;
 import com.example.bakethis.Object.StepsObject;
 import com.example.bakethis.R;
@@ -74,8 +75,35 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private int currentWindow;
     private long currentPosition;
 
+    private boolean forTablet = false;
+
+    public boolean isForTablet() {
+        return forTablet;
+    }
+
+    public void setForTablet(boolean forTablet) {
+        this.forTablet = forTablet;
+    }
+
     private ArrayList<StepsObject> stepsList;
     private int stepIndex;
+
+    public ArrayList<StepsObject> getStepsList() {
+        return stepsList;
+    }
+
+    public void setStepsList(ArrayList<StepsObject> stepsList) {
+        this.stepsList = stepsList;
+    }
+
+    public int getStepIndex() {
+        return stepIndex;
+    }
+
+    public void setStepIndex(int stepIndex) {
+        this.stepIndex = stepIndex;
+        Log.d(TAG, "Step Index to --> " + stepIndex);
+    }
 
     @Nullable
     @Override
@@ -96,13 +124,18 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
             playwhenready = true;
             stepsList = getArguments().getParcelableArrayList(Constants.STEPS_LIST);
             stepIndex = getArguments().getInt(Constants.STEP_INDEX);
+            setForTablet(getArguments().getBoolean(Constants.TABLET_ARG));
 
-            checkAndInitializePlayer(stepIndex,stepsList);
+            setStepIndex(stepIndex);
+            setStepsList(stepsList);
+
+            checkAndInitializePlayer(getStepIndex(),getStepsList());
         }
         else if(savedInstanceState!=null){
             Log.d(TAG, "onCreateView: From Saved Instance");
             stepsList = savedInstanceState.getParcelableArrayList(Constants.STEPS_LIST);
-            stepIndex = savedInstanceState.getInt(Constants.STEP_INDEX);
+
+            setStepIndex(savedInstanceState.getInt(Constants.STEP_INDEX));
             currentWindow = savedInstanceState.getInt(Constants.CURRENT_WINDOW);
             currentPosition = savedInstanceState.getLong(Constants.CURRENT_POSITION);
             hasURL = savedInstanceState.getBoolean(Constants.HAS_URL);
@@ -111,15 +144,24 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
             thumbnailUrl = savedInstanceState.getString(Constants.THUMBNAIL_URL);
             playwhenready = savedInstanceState.getBoolean(Constants.PLAY_WHEN_READY);
 
+            setForTablet(savedInstanceState.getBoolean(Constants.IS_FOR_TABLET));
+
+            setStepsList(stepsList);
+
+
             initializePlayer();
         }
         else if(intent!=null){
             Log.d(TAG, "onCreateView: Right here with Intent");
             playwhenready = true;
-            stepIndex = intent.getIntExtra(Constants.STEP_INDEX,0);
-            stepsList = intent.getParcelableArrayListExtra(Constants.STEPS_LIST);
+            if(!isForTablet()){
+                stepIndex = intent.getIntExtra(Constants.STEP_INDEX,0);
+                stepsList = intent.getParcelableArrayListExtra(Constants.STEPS_LIST);
+                setStepIndex(stepIndex);
+                setStepsList(stepsList);
+            }
 
-            checkAndInitializePlayer(stepIndex,stepsList);
+            checkAndInitializePlayer(getStepIndex(),getStepsList());
 
         }
 
@@ -153,33 +195,48 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private void giveButtonsFunctionality() {
             nextButton.setOnClickListener(v ->
             {
-                if(stepIndex<stepsList.size()){
-                    replaceFragment(++stepIndex);
+                if(getStepIndex()<getStepsList().size()){
+                    int index = getStepIndex();
+                    index++;
+                    setStepIndex(index);
+                    replaceFragment(getStepIndex());
                 }
             });
 
             prevButton.setOnClickListener(v -> {
-                if(stepIndex>-1){
-                    replaceFragment(--stepIndex);
+                if(getStepIndex()>-1){
+                    int index = getStepIndex();
+                    index--;
+                    setStepIndex(index);
+                    replaceFragment(getStepIndex());
                 }
             });
+
     }
 
     private void replaceFragment(int index) {
         try{
             Log.d(TAG, "replaceFragment: Replacing Index --> " + index);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(Constants.STEPS_LIST,stepsList);
+            bundle.putParcelableArrayList(Constants.STEPS_LIST,getStepsList());
             bundle.putInt(Constants.STEP_INDEX, index);
+            bundle.putBoolean(Constants.TABLET_ARG, isForTablet());
 
             StepDetailFragment replacingFragment = new StepDetailFragment();
+            replacingFragment.setForTablet(isForTablet());
             replacingFragment.setArguments(bundle);
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .replace(R.id.f_container,replacingFragment)
-                    .commit();
+            if(!isForTablet()){
+                fragmentManager.beginTransaction()
+                        .replace(R.id.f_container,replacingFragment)
+                        .commit();
+            }
+            else{
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fl_step_detail,replacingFragment,"stepDetailFrag")
+                        .commit();
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -212,13 +269,15 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     }
 
     private void inflateViewExceptPlayer() {
-        StepsObject currentStep = stepsList.get(stepIndex);
+        int index = getStepIndex();
+        ArrayList<StepsObject> stepsList = getStepsList();
+        StepsObject currentStep = stepsList.get(index);
         shortDesc.setText(currentStep.getShortDesc());
         longDesc.setText(currentStep.getDesc());
-        if(stepIndex==stepsList.size()-1){
+        if(index==stepsList.size()-1){
             nextButton.setVisibility(View.GONE);
         }
-        if(stepIndex==0){
+        if(index==0){
             prevButton.setVisibility(View.GONE);
         }
     }
@@ -275,20 +334,21 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        Log.d(TAG, "onSaveInstanceState: Saving the state");
-        outState.putParcelableArrayList(Constants.STEPS_LIST,stepsList);
-        outState.putInt(Constants.STEP_INDEX,stepIndex);
+            Log.d(TAG, "onSaveInstanceState: Saving the state");
+            outState.putParcelableArrayList(Constants.STEPS_LIST,getStepsList());
+            outState.putInt(Constants.STEP_INDEX,getStepIndex());
 
-        updateCurrentPosition();
+            updateCurrentPosition();
 
-        outState.putInt(Constants.CURRENT_WINDOW, currentWindow);
-        outState.putLong(Constants.CURRENT_POSITION, currentPosition);
+            outState.putInt(Constants.CURRENT_WINDOW, currentWindow);
+            outState.putLong(Constants.CURRENT_POSITION, currentPosition);
 
             outState.putBoolean(Constants.HAS_THUMBNAIL_URL, hasThumbnailUrl);
             outState.putString(Constants.THUMBNAIL_URL, thumbnailUrl);
             outState.putBoolean(Constants.HAS_URL, hasURL);
             outState.putString(Constants.VIDEO_URL, videoURL);
-        outState.putBoolean(Constants.PLAY_WHEN_READY, playwhenready);
+            outState.putBoolean(Constants.PLAY_WHEN_READY, playwhenready);
+            outState.putBoolean(Constants.IS_FOR_TABLET, isForTablet());
 
         super.onSaveInstanceState(outState);
     }
@@ -296,7 +356,6 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private void updateCurrentPosition() {
         if(player!=null){
             currentPosition = player.getCurrentPosition();
-            Log.d(TAG, "updateCurrentPosition: " + currentPosition);
             currentWindow = player.getCurrentWindowIndex();
         }
     }
@@ -341,7 +400,6 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
 
     private void fullscreenPlayer() {
         if(isSinglePaneLandscape() && (hasURL || hasThumbnailUrl)){
-            Log.d(TAG, "fullscreenPlayer: Fulling the screen");
             int flagFullScreen = View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -363,8 +421,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     }
 
     private boolean isTabletMode() {
-        // TODO : Update this method
-        return false;
+        return isForTablet();
     }
 
     private class MySessionCallback extends MediaSessionCompat.Callback{

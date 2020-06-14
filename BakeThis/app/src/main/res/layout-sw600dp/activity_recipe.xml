@@ -42,7 +42,7 @@
             android:textStyle="bold"
             android:textSize="20sp"/>
         <fragment
-            android:id="@+id/f_steps"
+            android:id="@+id/f_steps_tablet"
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="1"

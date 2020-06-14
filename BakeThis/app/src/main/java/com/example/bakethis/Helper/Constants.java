@@ -9,6 +9,10 @@ public class Constants {
     public static final String PLAY_WHEN_READY = "play_when_ready";
     public static final String PREF_RECIPE_NAME = "pref_recipe_name";
     public static final String PREF_RECIPE_LIST = "pref_recipe_list";
+    public static final String IS_FOR_TABLET = "is_for_tablet";
+    public static final String IS_FOR_TABLET_ACTIVITY = "is_for_tablet_activity";
+    public static final String TABLET_ARG = "tablet_arg";
+    public static String SELECTED_STEP_INDEX = "selected_step_index";
 
     private Constants(){}
 

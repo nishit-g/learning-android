@@ -1,5 +1,6 @@
 package com.example.bakethis.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,12 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepsClickLi
     private RecyclerView rvSteps;
     private ArrayList<StepsObject> stepsList;
     private RecipeObject currentRecipe;
+
+    private OnStepFragmentClick mCallback;
+
+    public interface OnStepFragmentClick{
+        void onStepFragClick(int stepIndex);
+    }
 
     @Nullable
     @Override
@@ -52,9 +59,17 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepsClickLi
 
     @Override
     public void onStepClick(int position) {
-        Intent intent = new Intent(getContext(), StepDetailActivity.class);
-        intent.putParcelableArrayListExtra(Constants.STEPS_LIST, stepsList);
-        intent.putExtra(Constants.STEP_INDEX, position);
-        startActivity(intent);
+        mCallback.onStepFragClick(position);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallback = (OnStepFragmentClick) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnStepFragmentClick");
+        }
     }
 }
