@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="sort_menu_item">Sort</string>
+    <string name="popular_name">Popular</string>
+    <string name="top_rated_name">Top Rated</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_avergae">Movie Average</string>
+    <string name="movie_release_date">Release Date</string>
+    <string name="movie_plot">Overview</string>
+    <string name="check_internet">Please Connect to Internet and then restart the app</string>
+    <string name="fav_text">Favorite(s)</string>
+    <string name="watch_trailer">Watch Trailer</string>
+    <string name="movie_review">Review(s)</string>
+    <string name="connect_to_internet">Check your internet connection !</string>
+    <string name="wait_for_reviews">Wait for the reviews to load.....</string>
+    <string name="no_reviews_available">No Reviews Available</string>
+    <string name="add_fav"><![CDATA[<-- Add to Favorites  !]]></string>
+    <string name="no_trailer">No Trailers Available</string>
+    <string name="remove_from_fav"><![CDATA[<--Unfavorite :(]]></string>
+</resources>
