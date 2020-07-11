@@ -3,9 +3,15 @@ package com.example.bakethis.Object;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class IngredientObject implements Parcelable {
-    private int quantity;
+
+    @SerializedName("quantity")
+    private float quantity;
+    @SerializedName("measure")
     private String measure;
+    @SerializedName("ingredient")
     private String ingredients;
 
 
@@ -13,7 +19,7 @@ public class IngredientObject implements Parcelable {
     }
 
     protected IngredientObject(Parcel in) {
-        quantity = in.readInt();
+        quantity = in.readFloat();
         measure = in.readString();
         ingredients = in.readString();
     }
@@ -30,11 +36,11 @@ public class IngredientObject implements Parcelable {
         }
     };
 
-    public int getQuantity() {
+    public float getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(float quantity) {
         this.quantity = quantity;
     }
 
@@ -61,7 +67,7 @@ public class IngredientObject implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(quantity);
+        dest.writeFloat(quantity);
         dest.writeString(measure);
         dest.writeString(ingredients);
     }

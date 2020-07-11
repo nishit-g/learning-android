@@ -3,15 +3,24 @@ package com.example.bakethis.Object;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 public class RecipeObject implements Parcelable {
+    @SerializedName("id")
     private int id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("image")
     private String imageUrl;
+    @SerializedName("servings")
     private int servings;
 
+    @SerializedName("ingredients")
     private ArrayList<IngredientObject> ingredientsList;
+
+    @SerializedName("steps")
     private ArrayList<StepsObject> stepsList;
 
     public RecipeObject() {

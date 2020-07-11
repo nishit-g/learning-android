@@ -3,11 +3,18 @@ package com.example.bakethis.Object;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class StepsObject implements Parcelable {
+    @SerializedName("id")
     private int id;
+    @SerializedName("shortDescription")
     private String shortDesc;
+    @SerializedName("description")
     private String desc;
+    @SerializedName("videoURL")
     private String videoUrl;
+    @SerializedName("thumbnailURL")
     private String thumbnailUrl;
 
     public StepsObject() {

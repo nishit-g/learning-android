@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.bakethis.Adapters.HomepageAdapter;
+import com.example.bakethis.Helper.BakingAPI;
+import com.example.bakethis.Helper.BakingNetwork;
 import com.example.bakethis.Helper.Constants;
 import com.example.bakethis.Helper.ParseJson;
 import com.example.bakethis.Widget.IngredientWidgetProvider;
@@ -26,12 +28,19 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity implements HomepageAdapter.TouchListener {
 
     private ActivityMainBinding layoutBinding;
     private RecyclerView rvHomePage;
     private ArrayList<RecipeObject> recipeList;
     private boolean isTablet = false;
+
+    private BakingAPI bakingAPI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements HomepageAdapter.T
 
         rvHomePage = layoutBinding.rvHomepage;
 
+        bakingAPI = BakingNetwork.getInstance(this);
+
         if(layoutBinding.isTablet!=null){
             isTablet = true;
         }
@@ -50,14 +61,32 @@ public class MainActivity extends AppCompatActivity implements HomepageAdapter.T
     }
 
     private void inflateRecyclerView() {
-        recipeList = ParseJson.parseRecipes(this);
+//        recipeList = ParseJson.parseRecipes(this);
+        Call<ArrayList<RecipeObject>> call = bakingAPI.getRecipes();
+        call.enqueue(new Callback<ArrayList<RecipeObject>>() {
+            @Override
+            public void onResponse(Call<ArrayList<RecipeObject>> call, Response<ArrayList<RecipeObject>> response) {
+                if(response.isSuccessful()){
 
-        int spanCount = calculateNoOfColumns();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount, LinearLayoutManager.VERTICAL, false);
-        rvHomePage.setLayoutManager(gridLayoutManager);
+                    recipeList = response.body();
+                    Log.d("recipe", "onResponse: "  +recipeList.size());
+                    Log.d("recipe", "onResponse: "  +recipeList.get(0).getIngredientsList().size());
 
-        HomepageAdapter homepageAdapter = new HomepageAdapter(this, recipeList,this);
-        rvHomePage.setAdapter(homepageAdapter);
+                    int spanCount = calculateNoOfColumns();
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, spanCount, LinearLayoutManager.VERTICAL, false);
+                    rvHomePage.setLayoutManager(gridLayoutManager);
+
+                    HomepageAdapter homepageAdapter = new HomepageAdapter(MainActivity.this, recipeList, MainActivity.this);
+                    rvHomePage.setAdapter(homepageAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<RecipeObject>> call, Throwable t) {
+                    t.printStackTrace();
+            }
+        });
+
     }
 
     public int calculateNoOfColumns() {

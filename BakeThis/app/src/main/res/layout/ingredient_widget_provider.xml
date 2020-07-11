@@ -7,17 +7,40 @@
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
-    <TextView
-        android:id="@+id/widget_ingredient"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center_horizontal"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
-        tools:text="@string/ingredients" />
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary">
+
+
+        <ImageView
+            android:id="@+id/bt_prev"
+            android:layout_width="30sp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/exo_controls_previous"/>
+
+        <TextView
+            android:id="@+id/widget_ingredient"
+            android:layout_width="0sp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal"
+            android:textColor="#ffffff"
+            android:textSize="24sp"
+            android:textStyle="bold|italic"
+            tools:text="@string/ingredients" />
+
+        <ImageView
+            android:id="@+id/bt_next"
+            android:layout_width="30sp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/exo_icon_next"/>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_no_list"
